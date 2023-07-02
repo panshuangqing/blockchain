@@ -7,4 +7,6 @@ func main() {
 
 	bc.AddBlock("send 2 BTC to Ivan")
 
+	bc.Print()
+
 }

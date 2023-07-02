@@ -16,6 +16,8 @@ type Block struct {
 	PrevBlockHash []byte
 
 	Hash []byte
+
+	Nonce int64
 }
 
 func NewBlock(Data string, prevBlockHash []byte) *Block {
@@ -26,7 +28,13 @@ func NewBlock(Data string, prevBlockHash []byte) *Block {
 		Hash:          nil,
 	}
 
-	block.SetHash()
+	pow := NewProofOfWork(block)
+
+	nonce, hash := pow.Run()
+
+	block.Hash = hash
+
+	block.Nonce = nonce
 
 	return block
 
@@ -58,6 +66,12 @@ func (b *Block) Print() {
 
 	fmt.Printf("Data.hash: %s \n", b.Data)
 
-	fmt.Printf("Hash: %x\n\n", b.Hash)
+	fmt.Printf("Hash: %x\n", b.Hash)
+
+	fmt.Printf("Nonce: %d\n\n", b.Nonce)
+
+	pow := NewProofOfWork(b)
+
+	fmt.Printf("IsValid: %v\n\n", pow.Validate())
 
 }
